@@ -10,7 +10,6 @@ services:
     name: tplab2-app
     runtime: python
     buildCommand: './build.sh'
-    preDeployCommand: 'bash init_db.sh'
     startCommand: 'python -m gunicorn tplab2.asgi:application -k uvicorn.workers.UvicornWorker'
     envVars:
       - key: DATABASE_URL
