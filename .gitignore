@@ -1,3 +1,12 @@
 __pycache__/
 .DS_Store
 .env
+*.py[cod]
+*$py.class
+Thumbs.db
+
+tplab2-env/
+venv/
+env/
+
+.vscode/
