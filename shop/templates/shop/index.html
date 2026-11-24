@@ -7,20 +7,29 @@
 <body>
     <div>
         <h3>Список</h3>
-        <table>
-            <tr>
-                <td><p>Наименование</p></td>
-                <td><p>Цена</p></td>
-                <td></td>
-            </tr>
-            {% for p in products %}
+        <form method="post" action="{% url 'checkout' %}">
+            {% csrf_token %}
+            <table>
                 <tr>
-                    <td><p>{{ p.name }}</p></td>
-                    <td><p>{{ p.price }}</p></td>
-                    <td><p><a href="/buy/{{ p.id }}">Купить</a></p></td>
+                    <td><p><b>Наименование</b></p></td>
+                    <td><p><b>Цена</b></p></td>
+                    <td><p><b>Количество</b></p></td>
                 </tr>
-            {% endfor %}
-        </table>
+                {% for p in products %}
+                    <tr>
+                        <td><p>{{ p.name }}</p></td>
+                        <td><p>{{ p.price }}</p></td>
+                        <td>
+                            <input type="number" name="product_{{ p.id }}" value="0" min="0" style="width: 60px;">
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <br>
+            <p>Ваше имя: <input type="text" name="person" required></p>
+            <p>Адрес доставки: <input type="text" name="address" required></p>
+            <input type="submit" value="Оформить заказ">
+        </form>
     </div>
 	<footer>My online shop</footer>
 </body>
