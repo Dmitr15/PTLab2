@@ -32,3 +32,24 @@ class DiscountTest(TestCase):
         self.assertContains(response, "Итоговая сумма: 2700 руб.")
         self.assertContains(response, "Применена скидка 10%")
         self.assertEqual(Purchase.objects.count(), 2)
+        
+    def test_empty_cart_error(self):
+        response = self.client.post(self.url, {
+            'person': 'Иван', 'address': 'Улица 1',
+            f'product_{self.p1.id}': 0, f'product_{self.p2.id}': 0,
+        })
+        self.assertContains(response, "Вы не выбрали ни одного товара")
+        self.assertEqual(Purchase.objects.count(), 0) 
+
+    def test_large_discount_order(self):
+        response = self.client.post(self.url, {
+            'person': 'Иван', 'address': 'Улица 1',
+            f'product_{self.p1.id}': 5, f'product_{self.p2.id}': 2,
+        })
+        self.assertContains(response, "Итоговая сумма: 8100 руб.")
+        self.assertContains(response, "Применена скидка 10%")
+        self.assertEqual(Purchase.objects.count(), 7) 
+
+    def test_checkout_get_method(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "Ошибка: неверный метод запроса.")

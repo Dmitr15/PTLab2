@@ -17,6 +17,14 @@ class ProductTestCase(TestCase):
         self.assertTrue(Product.objects.get(name="book").price == 740)
         self.assertTrue(Product.objects.get(name="pencil").price == 50)
 
+    def test_product_cascade_delete(self):
+        product = Product.objects.get(name="book")
+        Purchase.objects.create(product=product, person="Ivanov", address="Svetlaya St.")
+        self.assertEqual(Purchase.objects.count(), 1)
+        
+        product.delete()
+        
+        self.assertEqual(Purchase.objects.count(), 0)
 
 class PurchaseTestCase(TestCase):
     def setUp(self):
